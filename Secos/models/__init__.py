@@ -1,0 +1,1 @@
+from .models import german_model, DecompoundingModel

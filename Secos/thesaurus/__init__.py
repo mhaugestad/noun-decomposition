@@ -1,1 +1,0 @@
-from .thesaurus import german_model, DistributionalThesaurus

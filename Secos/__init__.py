@@ -1,1 +1,1 @@
-from .models import Decomposition
+from .Decomposition import Decomposition
