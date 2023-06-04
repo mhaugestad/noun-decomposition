@@ -1,1 +1,1 @@
-from .models import german_model, DecompoundingModel
+from .models import DecompoundingModel
