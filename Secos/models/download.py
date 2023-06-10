@@ -1,42 +1,26 @@
 from .models import DecompoundingModel
-import argparse
-import urllib.request
-import zipfile
-import os
+import requests, shutil, zipfile, os, pickle
+from tqdm import tqdm
 
 def download(model_name):
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+    script_dir = os.path.dirname(os.path.abspath(__file__)) + '/data/'
 
     # Extract the file name from the URL
-    base_url = 'https://github.com/mhaugestad/noun-decomposition/tree/main/pretrained-models/'
-    file_name = os.path.basename(base_url + model_name)
+    base_url = 'https://secos-model-data.s3.eu-west-2.amazonaws.com/'
+    
+    # Download the zip file
+    response = requests.get(base_url + model_name + '.json', stream=True)
+    total_size = int(response.headers.get("Content-Length", 0))
+    progress_bar = tqdm(total=total_size, unit="B", unit_scale=True)
+    with open(script_dir + model_name + '.json', "wb") as file:
+        for chunk in response.iter_content(chunk_size=1024):
+            if chunk:
+                # Write the chunk to the file
+                file.write(chunk)
+                # Update the progress bar with the chunk size
+                progress_bar.update(len(chunk))
 
-    # Download the tar.gz file
-    urllib.request.urlretrieve(base_url, model_name)
+    # Close the progress bar
+    progress_bar.close()
 
-    # Extract the contents of the tar.gz file
-    with zipfile.ZipFile(file_name, 'r') as zip_ref:
-        zip_ref.extractall(script_dir)
-
-    # Remove the zip file
-    os.remove(script_dir + file_name)
-
-    print("Extraction complete!")
-    return None
-
-def main():
-    parser = argparse.ArgumentParser(description="Command line tool")
-    subparsers = parser.add_subparsers(dest="command")
-
-    # Create a subparser for the "download" command
-    download_parser = subparsers.add_parser("download", help="Download command")
-    download_parser.add_argument("model", action="store_true", help="Specify model to download")
-
-    args = parser.parse_args()
-
-    # Call the appropriate function based on the provided command
-    if args.command == "download":
-        download()
-
-if __name__ == "__main__":
-    main()
+    print("Download completed!")

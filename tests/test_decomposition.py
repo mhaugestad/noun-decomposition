@@ -2,6 +2,7 @@
 import pytest
 from Secos.Decomposition import Decomposition
 from Secos.models import DecompoundingModel
+from Secos.utils import get_possible_splits, merge_suffix, merge_prefix
 
 model = DecompoundingModel(
     language='German',
@@ -14,18 +15,11 @@ model = DecompoundingModel(
 
 secos = Decomposition(model=model)
 
-def test_splits():
+def test_split_indices():
     word = 'Bundesfinanzministerium'
-    computed_splits = secos.get_possible_splits(word)
+    computed_splits = get_possible_splits(word)
     defined_splits = [0, 4, 5, 6, 12, 20, 23]
     assert defined_splits == computed_splits
-
-def test_splits():
-    word = 'Bundesfinanzministerium'
-    computed_splits = secos.get_possible_splits(word)
-    defined_splits = [0, 4, 5, 6, 12, 20, 23]
-    assert defined_splits == computed_splits
-
 
 def test_probability_score():
     calculated_probability = model.calculate_probability('Bund')

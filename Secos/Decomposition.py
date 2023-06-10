@@ -1,17 +1,16 @@
 from scipy.stats import gmean
 from itertools import chain
-from .models import DecompoundingModel
+from .models import DecompoundingModel, download, load
 from .utils import get_possible_splits, merge_prefix, merge_suffix
 import re
 import typing as t
+import pickle
 
 #https://aclanthology.org/N16-1075/
 
 class Decomposition:
     """
-    
-    """
-    
+    """    
     def __init__(self, model: DecompoundingModel):
         self.model = model
 
@@ -22,7 +21,7 @@ class Decomposition:
         if word in self.model.precomputed_splits:
             return self.model.precomputed_splits[word]
         else:
-            splits = get_possible_splits(word)
+            splits = get_possible_splits(word, self.model.generated_dictionary)
             suffix_prefix, prefix_suffix = self.merge_suffix_prefix(splits)
             compounds = self.get_compounds(word, splits, suffix_prefix, prefix_suffix)
             return compounds[0].resolve()
@@ -44,14 +43,21 @@ class Decomposition:
 
     def __repr__(self):
         return f"Decomposition({self.model.language})"
-
+    
+    @classmethod
+    def load_model(cls, model_name):
+        return load(model_name)
+    
+    @classmethod
+    def download_model(cls, model_name):
+        return download(model_name)
 
 class Compound:
     """
     Class to represente a compound. This class stores information about the span of the compound in the word,
     as well as its probability information.
     """
-    def __init__(self, span, word, model):
+    def __init__(self, span: tuple, word: str, model: DecompoundingModel):
         self.span = span
         self.start = span[0]
         self.end = span[1]
