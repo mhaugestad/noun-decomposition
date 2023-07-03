@@ -10,3 +10,6 @@ __pycache__
 pretrained-models/*/*.json
 secos/models/data/*.json
 pretrained-models/*.gz
+evaluation/wiktionary
+evaluation/output
+evaluation/*.tar.gz
