@@ -23,17 +23,17 @@ pip install -e . -U
 TBC
 
 ## Installing models:
-The module relies on pretrained models to be passed in. These can be downloaded from commandline as follows:
+The module relies on pretrained models to be passed in. These can be downloaded from command line as follows:
 
 `python -m Secos download --model german`
 
 Or from a python script or notebook like this:
 
-`
+```
 from Secos import Decomposition
 
 Decomposition.download_model('german')
-`
+```
 
 # Basic Usage
 ```
@@ -48,6 +48,12 @@ secos.decompose("Bundesfinanzministerium")
 ['Bundes', 'finanz', 'ministerium']
 ```
 
-# Project structure
+# Module structure
+
+The code is structured as following:
+
+The entrypoint of the module is the Decomposition class. This class is initialised with an instance of the DecompoundingModel class.
+
+Decomposition relies on two other classes defined in the same script, Compound and Compounds. The compound class keeps track of each compound, its span within the word and its probability of occuring given the precomputed model passed in to the class instance. The Compounds class takes a list of instances of the Compound class, and keeps track of the geometric mean of the whole sequence of Compounds passed to it. This way, during the decomposition we can pull out the sequence of compounds with the highest geometric mean.
 
 # Evaluation

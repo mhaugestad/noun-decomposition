@@ -2,14 +2,17 @@ from .models import DecompoundingModel
 import requests, shutil, zipfile, os, pickle
 from tqdm import tqdm
 
-def download(model_name):
+# Extract the file name from the URL
+MODEL_URL = 'https://secos-model-data.s3.eu-west-2.amazonaws.com/'
+
+def download(model_name, overwrite=False):
     script_dir = os.path.dirname(os.path.abspath(__file__)) + '/data/'
 
-    # Extract the file name from the URL
-    base_url = 'https://secos-model-data.s3.eu-west-2.amazonaws.com/'
+    if all([overwrite==False, model_name + ".json" in os.listdir(script_dir)]):
+        raise Exception("Model already download. To overwrite, set overwrite=True")
     
     # Download the zip file
-    response = requests.get(base_url + model_name + '.json', stream=True)
+    response = requests.get(MODEL_URL + model_name + '.json', stream=True)
     total_size = int(response.headers.get("Content-Length", 0))
     progress_bar = tqdm(total=total_size, unit="B", unit_scale=True)
     with open(script_dir + model_name + '.json', "wb") as file:

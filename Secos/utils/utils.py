@@ -1,9 +1,13 @@
 from itertools import chain
 import typing as t
 
-def get_possible_splits(word, subwords) -> list:
+def get_possible_splits(word: str, subwords: t.List[str]) -> t.List[int]:
     """
-    
+    Gets a list of all possible indices for splitting a word.
+
+    args:
+        word: string - word to be split
+        subwords: list of words to be used to find the indices of splits. Typically a generated dictionary of atomic subwords.
     """
     
     # Produce all spans that corresponds to a match in the distributional thesaurus ie [(0,4),(0,5),(0,6)...]
@@ -22,16 +26,21 @@ def get_possible_splits(word, subwords) -> list:
 
 def merge_suffix(splits, ml) -> t.List[int]:
     """
-    Takes a set of indices for splits as input. 
-    Produces tuples using zip; (start, start_next)
+    Takes a set of indices for splits as input. Produces tuples using zip; (start, start_next)
+
+    args:
+        splits: a list of split indices, generated from get_possible_splits function.
+        ml: maximum suffix length to consider for merging
     """
     merged_splits: t.List[int] = [start for start, start_next in zip(splits, splits[1:] + [max(splits)]) if (start_next - start) > ml]
     return merged_splits
     
 def merge_prefix(splits, ml) -> t.List[int]:
     """
-    Takes a set of indices for splits as input. 
-    Produces tuples using zip; (start, start_next).
+    Takes a set of indices for splits as input. Produces tuples using zip; (start, start_next).
+    args:
+        splits: a list of split indices, generated from get_possible_splits function.
+        ml: maximum prefix length to consider for merging
     """
     merged_splits: t.List[int] = [0] + [start_next for start, start_next in zip(splits, splits[1:]) if (start_next - start) > ml]
     return merged_splits

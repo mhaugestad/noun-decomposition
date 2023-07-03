@@ -4,29 +4,26 @@ from .models import DecompoundingModel, download, load
 from .utils import get_possible_splits, merge_prefix, merge_suffix
 import re
 import typing as t
-import pickle
 
 #https://aclanthology.org/N16-1075/
 
-class Decomposition:
-    """
-    """    
+class Decomposition: 
     def __init__(self, model: DecompoundingModel):
         self.model = model
 
     def decompose(self, word) -> t.List[str]:
         """
-        Returns a list of tokens
+        Returns a list of tokens making up the word.
         """
-        if word in self.model.precomputed_splits:
-            return self.model.precomputed_splits[word]
+        if word.lower() in self.model.precomputed_splits:
+            return self.model.precomputed_splits[word.lower()]
         else:
-            splits = get_possible_splits(word, self.model.generated_dictionary)
+            splits = get_possible_splits(word.lower(), self.model.generated_dictionary)
             suffix_prefix, prefix_suffix = self.merge_suffix_prefix(splits)
-            compounds = self.get_compounds(word, splits, suffix_prefix, prefix_suffix)
+            compounds = self.get_compounds(word.lower(), splits, suffix_prefix, prefix_suffix)
             return compounds[0].resolve()
     
-    def merge_suffix_prefix(self, splits) -> tuple:
+    def merge_suffix_prefix(self, splits) -> t.Tuple[t.List[int], t.List[int]]:
         suffix_prefix: t.List[int] = merge_suffix(splits, self.model.ml)
         suffix_prefix: t.List[int] = merge_prefix(suffix_prefix, self.model.ml)
         prefix_suffix: t.List[int] = merge_prefix(splits, self.model.ml)
@@ -35,8 +32,8 @@ class Decomposition:
 
     def get_compounds(self, word, splits, suffix_prefix, prefix_suffix) -> list:
         compounds = ([
-            Compounds([Compound((i,j), word, self.model) for i,j in zip(suffix_prefix, suffix_prefix[1:] + [max(splits)])]),
-            Compounds([Compound((i,j), word, self.model) for i,j in zip(prefix_suffix, prefix_suffix[1:] + [max(splits)])])
+            Compounds([Compound((i,j), word.lower(), self.model) for i,j in zip(suffix_prefix, suffix_prefix[1:] + [max(splits)])]),
+            Compounds([Compound((i,j), word.lower(), self.model) for i,j in zip(prefix_suffix, prefix_suffix[1:] + [max(splits)])])
             ])
         compounds: t.List[Compounds] = sorted(compounds, key=lambda c: c.score, reverse=True)
         return compounds
@@ -61,7 +58,7 @@ class Compound:
         self.span = span
         self.start = span[0]
         self.end = span[1]
-        self.word = word
+        self.word = word.lower()
         self.compound = word[self.start:self.end]
         self.probability = model.calculate_probability(self.compound)
 

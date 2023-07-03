@@ -7,4 +7,6 @@ __pycache__
 *.txt
 *.bin
 *.cand
-data/*
+pretrained-models/*/*.json
+Secos/models/data/*.json
+pretrained-models/*.gz
