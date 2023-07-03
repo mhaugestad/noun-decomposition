@@ -8,5 +8,5 @@ __pycache__
 *.bin
 *.cand
 pretrained-models/*/*.json
-Secos/models/data/*.json
+secos/models/data/*.json
 pretrained-models/*.gz
