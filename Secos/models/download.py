@@ -7,6 +7,7 @@ MODEL_URL = 'https://secos-model-data.s3.eu-west-2.amazonaws.com/'
 
 def download(model_name, overwrite=False):
     script_dir = os.path.dirname(os.path.abspath(__file__)) + '/data/'
+    os.makedirs(script_dir, exist_ok=True)
 
     if all([overwrite==False, model_name + ".json" in os.listdir(script_dir)]):
         raise Exception("Model already download. To overwrite, set overwrite=True")
