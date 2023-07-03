@@ -17,6 +17,6 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/mhaugestad/noun-decomposition",
     packages=setuptools.find_packages(include=['Secos', 'Secos.*']),
-    install_requires=['scipy', 'numpy', 'pytest', 'importlib-resources'],
+    install_requires=['scipy', 'numpy', 'pytest', 'importlib-resources', 'requests'],
     python_requires='>=3.6',
 )
