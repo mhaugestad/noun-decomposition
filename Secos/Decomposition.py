@@ -46,8 +46,8 @@ class Decomposition:
         return load(model_name)
     
     @classmethod
-    def download_model(cls, model_name):
-        return download(model_name)
+    def download_model(cls, model_name, overwrite=False):
+        return download(model_name, overwrite=overwrite)
 
 class Compound:
     """
