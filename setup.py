@@ -19,4 +19,5 @@ setuptools.setup(
     packages=setuptools.find_packages(include=['Secos', 'Secos.*']),
     install_requires=['scipy', 'numpy', 'pytest', 'importlib-resources', 'requests', 'tqdm'],
     python_requires='>=3.6',
+    download_url='https://github.com/mhaugestad/noun-decomposition/archive/refs/tags/0.0.1.tar.gz'
 )

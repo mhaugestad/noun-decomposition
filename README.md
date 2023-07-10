@@ -20,7 +20,9 @@ pip install -e . -U
 ```
 
 ## From Pip
+```
 pip install noun-decomposition
+```
 
 ## Installing models:
 The module relies on pretrained models to be passed in. These can be downloaded from command line as follows:
@@ -30,14 +32,14 @@ The module relies on pretrained models to be passed in. These can be downloaded 
 Or from a python script or notebook like this:
 
 ```
-from Secos import Decomposition
+from secos import Decomposition
 
 Decomposition.download_model('german')
 ```
 
 # Basic Usage
 ```
-from Secos import Decomposition
+from secos import Decomposition
 
 model = Decomposition.load_model('german')
 
