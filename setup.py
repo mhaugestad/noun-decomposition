@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="noun_decomposition",
+    name="noun-decomposition",
     version="0.0.1",
     author="Mathias Haugestad",
     author_email="mhaugestad@gmail.com",

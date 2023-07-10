@@ -20,7 +20,7 @@ pip install -e . -U
 ```
 
 ## From Pip
-TBC
+pip install noun-decomposition
 
 ## Installing models:
 The module relies on pretrained models to be passed in. These can be downloaded from command line as follows:
@@ -48,12 +48,5 @@ secos.decompose("Bundesfinanzministerium")
 ['Bundes', 'finanz', 'ministerium']
 ```
 
-# Module structure
-
-The code is structured as following:
-
-The entrypoint of the module is the Decomposition class. This class is initialised with an instance of the DecompoundingModel class.
-
-Decomposition relies on two other classes defined in the same script, Compound and Compounds. The compound class keeps track of each compound, its span within the word and its probability of occuring given the precomputed model passed in to the class instance. The Compounds class takes a list of instances of the Compound class, and keeps track of the geometric mean of the whole sequence of Compounds passed to it. This way, during the decomposition we can pull out the sequence of compounds with the highest geometric mean.
-
 # Evaluation
+The evaluation folder includes code for the evaluation of the pretrained models.
